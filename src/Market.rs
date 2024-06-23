@@ -1,3 +1,5 @@
+
+
 pub struct Good {
     price: f32,
     name: String,
@@ -18,6 +20,11 @@ impl Market {
     }
     pub fn get_good(&self, index: usize) -> &Good {
         &self.goods[index]
+    }
+    pub fn update_good_price(&mut self) {
+        for good in self.goods.iter_mut() {
+            good.price =  good.price * (good.q_bought / good.q_sold).sqrt();
+        }
     }
     
 }
