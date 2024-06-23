@@ -9,8 +9,8 @@ fn main() {
     let N= 10;
     
     // Agents initialization
-    let mut Actor_1 = OtherActor::new(rand::thread_rng().gen_range(0.0..50.0), "Test".into());
-    let mut Market_1 = OtherMarket::new();
+    let mut actor_1 = OtherActor::new(rand::thread_rng().gen_range(0.0..50.0), "Test".into());
+    let mut market_1 = OtherMarket::new();
     
     
     
