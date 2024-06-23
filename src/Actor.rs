@@ -1,7 +1,11 @@
 
+pub struct item {
+    
+}
 pub struct Actor {
     money: f32,
     name: String,
+    
 }
 
 impl Actor {
@@ -14,6 +18,9 @@ impl Actor {
     
     pub fn money_val(&self) -> f32 {
         return self.money;
-
     }
+    
+    
+    pub fn 
+    
 }

@@ -16,6 +16,7 @@ fn main() {
     market_1.add_good(10.0, "Wood".into());
     
     
+    
     // Simulation Step
     let mut i = 0;
     while i < n {
