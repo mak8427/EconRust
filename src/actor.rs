@@ -42,6 +42,13 @@ impl Actor {
     
     pub fn  buy_needs(&self,market: &Market){
         let goods_needed = self.needs_calc();
+        for (key, value) in &goods_needed {
+            let good = market.get_good(key);
+            let price = good.price;
+            let amount = value * price;
+            println!("Buying {} for {} each", key, price);
+            println!("Amount: {}", amount);
+        }
         println!("Goods needed: {:?}", goods_needed);
     }
     
