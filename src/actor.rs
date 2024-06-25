@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use crate::market::Market;
 
 pub struct item {
     
@@ -8,6 +9,7 @@ pub struct Actor {
     name: String,
     needs: HashMap<String, f32>,
     population:i32,
+    
     
 }
 
@@ -28,8 +30,19 @@ impl Actor {
     pub fn money_val(&self) -> f32 {
         return self.money;
     }
-    pub fn  needs(&self) -> f32 {
-        return 0.0;
+    fn needs_calc(&self) -> HashMap<String, f32> {
+        let mut goods_needed = self.needs.clone();
+        for (key, value) in &mut goods_needed {
+            if key == "Potatos" {
+                *value *= self.population as f32;
+            }
+        }
+        goods_needed
+    }
+    
+    pub fn  buy_needs(&self,market: &Market){
+        let goods_needed = self.needs_calc();
+        println!("Goods needed: {:?}", goods_needed);
     }
     
 }

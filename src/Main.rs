@@ -23,7 +23,7 @@ fn main() {
     // Simulation Step
     let mut i = 0;
     while i < n {
-        
+        actor_1.buy_needs(&market_1);
         i += 1;
     }
     
