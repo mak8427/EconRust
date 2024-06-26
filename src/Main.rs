@@ -12,7 +12,7 @@ fn main() {
     
     // Agents initialization
     
-    let mut actor_1 = OtherActor::new(rand::thread_rng().gen_range(0.0..50.0), "Test".into(), 1);
+    let mut actor_1 = OtherActor::new(rand::thread_rng().gen_range(0.0..50.0), "Test".into(), 20);
     let mut market_1 = OtherMarket::new();
     
     // Market initialization

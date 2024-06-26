@@ -15,8 +15,12 @@ pub struct Actor {
 
 impl Actor {
     pub fn new(money: f32, name: String, population: i32) -> Actor {
+        
+        //needs contains the amount of goods needed per person
         let mut needs = HashMap::new();
-        needs.insert("Potatos".into(), 0.0);
+        needs.insert("Potatos".into(), 1.0);
+        
+        
         Actor { money,name, needs, population }
     }
 
@@ -30,6 +34,8 @@ impl Actor {
     pub fn money_val(&self) -> f32 {
         return self.money;
     }
+    
+    //Needs calculate the needs of the population and returns a hashmap with the goods needed
     fn needs_calc(&self) -> HashMap<String, f32> {
         let mut goods_needed = self.needs.clone();
         for (key, value) in &mut goods_needed {
@@ -40,11 +46,20 @@ impl Actor {
         goods_needed
     }
     
+    
     pub fn  buy_needs(&self,market: &Market){
         let goods_needed = self.needs_calc();
-        for (key, value) in &goods_needed {
+        
+        //Iterate over the goods needed and buy them
+        for (key, value) in &goods_needed { 
             let good = market.get_good(key);
-            let price = good.price;
+            
+            if good.is_none() {
+                println!("Good not found: {}", key);
+                break;
+            }
+            
+            let price = good.unwrap().price;
             let amount = value * price;
             println!("Buying {} for {} each", key, price);
             println!("Amount: {}", amount);
