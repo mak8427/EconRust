@@ -11,6 +11,7 @@ pub struct Actor {
     population:i32,
     
     
+    
 }
 
 impl Actor {
