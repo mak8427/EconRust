@@ -48,7 +48,7 @@ impl Actor {
     }
     
     
-    pub fn  buy_needs(&self,market: &Market){
+    pub fn  buy_needs(&mut self, market: &Market){
         let goods_needed = self.needs_calc();
         
         //Iterate over the goods needed and buy them
@@ -62,7 +62,18 @@ impl Actor {
             
             let price = good.unwrap().price;
             let amount = value * price;
-            println!("Buying {} for {} each", key, price);
+            
+            if amount > self.money {
+                println!("Not enough money to buy {} for {} each", key, price);
+                continue;
+            }
+            if self.money > amount {
+                println!("Buying {} for {} each", key, price);
+
+                self.buy(amount);
+            }
+            
+            
             println!("Amount: {}", amount);
         }
         println!("Goods needed: {:?}", goods_needed);
