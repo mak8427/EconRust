@@ -69,7 +69,6 @@ impl Actor {
             }
             if self.money > amount {
                 println!("Buying {} for {} each", key, price);
-
                 self.buy(amount);
             }
             
