@@ -1,8 +1,10 @@
 use std::collections::HashMap;
 use crate::actor::Actor;
+use std::rc::Rc;
+use std::cell::RefCell;
 
 pub struct Workplace {
-    workers: Vec<*mut Actor>,
+    workers: Vec<Rc<RefCell<Actor>>>,
     name: String,
     //the type of goods produced and the amount produced in total
     goods_produced: HashMap<String, f32>,
@@ -10,26 +12,27 @@ pub struct Workplace {
 
 impl Workplace {
     pub fn new(mut goods_produced: HashMap<String, f32>, name: String ) -> Workplace {
-        
+
         if goods_produced.len() == 0 {
-            goods_produced.insert("Potatos".into(), 0.0);
+            goods_produced.insert("Potatoes".into(), 0.0);
         }
 
-        Workplace { workers: Vec::new(), name: "Test".into(), goods_produced }
+        Workplace { workers: Vec::new(), name, goods_produced }
     }
-    
+
     //Add a worker to the workplace (points to the actor)
-    pub fn add_worker(&mut self, worker: *mut Actor) {
+    pub fn add_worker(&mut self, worker: Rc<RefCell<Actor>>) {
         self.workers.push(worker);
     }
-    
+
     //Produce goods
     pub fn produce(&mut self) {
-
+        let mut effective_number_of_workers = 0;
+        for worker in &self.workers {
+            effective_number_of_workers += worker.borrow().population_val();
+            println!("Worker population: {}", worker.borrow().population_val());
+        }
+        println!("Effective number of workers: {}", effective_number_of_workers);
+        
     }
-    
-    
-    
-    
-
 }

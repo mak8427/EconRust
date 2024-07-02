@@ -1,7 +1,9 @@
+use std::cell::RefCell;
 use std::collections::HashMap;
+use std::rc::Rc;
 use crate::market::Market;
 
-pub struct item {
+pub struct Item {
     
 }
 pub struct Actor {
@@ -35,6 +37,15 @@ impl Actor {
     pub fn money_val(&self) -> f32 {
         return self.money;
     }
+    pub fn population_val(&self) -> i32 { return self.population; }
+    pub fn increase_population(&mut self, amount: i32) {
+        self.population += amount;
+    }
+    
+    
+    
+    
+    
     
     //Needs calculate the needs of the population and returns a hashmap with the goods needed
     fn needs_calc(&self) -> HashMap<String, f32> {
@@ -48,12 +59,12 @@ impl Actor {
     }
     
     
-    pub fn  buy_needs(&mut self, market: &Market){
+    pub fn  buy_needs(&mut self, market: Rc<RefCell<Market>>){
         let goods_needed = self.needs_calc();
-        
+        let market_borrow = market.borrow();
         //Iterate over the goods needed and buy them
         for (key, value) in &goods_needed { 
-            let good = market.get_good(key);
+            let good = market_borrow.get_good(key);
             
             if good.is_none() {
                 println!("Good not found: {}", key);
