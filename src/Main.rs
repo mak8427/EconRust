@@ -20,13 +20,14 @@ fn main() {
     let mut workplace_1 = workplace::Workplace::new(HashMap::new(), "Test".into());
     // Market initialization
     market_1.add_good(10.0, "Potatos".into());
-    
+    workplace_1.add_worker(&mut actor_1);
     
     
     // Simulation Step
     let mut i = 0;
     while i < n {
         actor_1.buy_needs(&market_1);
+        
         i += 1;
     }
     

@@ -23,6 +23,11 @@ impl Workplace {
         self.workers.push(worker);
     }
     
+    //Produce goods
+    pub fn produce(&mut self) {
+
+    }
+    
     
     
     
