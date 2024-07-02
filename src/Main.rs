@@ -32,6 +32,7 @@ fn main() {
     while i < n {
         actor_1.borrow_mut().buy_needs(market_1.clone());
         actor_1.borrow_mut().increase_population(1);
+        workplace_1.borrow_mut().produce();
         
         i += 1;
     }

@@ -8,16 +8,17 @@ pub struct Workplace {
     name: String,
     //the type of goods produced and the amount produced in total
     goods_produced: HashMap<String, f32>,
+    technology: f32,
 }
 
 impl Workplace {
-    pub fn new(mut goods_produced: HashMap<String, f32>, name: String ) -> Workplace {
+    pub fn new(mut goods_produced: HashMap<String, f32>, name: String, technology: f32) -> Workplace {
 
         if goods_produced.len() == 0 {
             goods_produced.insert("Potatoes".into(), 0.0);
         }
 
-        Workplace { workers: Vec::new(), name, goods_produced }
+        Workplace { workers: Vec::new(), name, goods_produced , technology}
     }
 
     //Add a worker to the workplace (points to the actor)
@@ -32,7 +33,11 @@ impl Workplace {
             effective_number_of_workers += worker.borrow().population_val();
             println!("Worker population: {}", worker.borrow().population_val());
         }
+        
+        
         println!("Effective number of workers: {}", effective_number_of_workers);
+        
+        
         
     }
 }

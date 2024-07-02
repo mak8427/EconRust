@@ -47,7 +47,7 @@ impl Actor {
     
     
     
-    //Needs calculate the needs of the population and returns a hashmap with the goods needed
+    //Calculate the needs of the population and returns a hashmap with the goods needed
     fn needs_calc(&self) -> HashMap<String, f32> {
         let mut goods_needed = self.needs.clone();
         for (key, value) in &mut goods_needed {
@@ -62,10 +62,14 @@ impl Actor {
     pub fn  buy_needs(&mut self, market: Rc<RefCell<Market>>){
         let goods_needed = self.needs_calc();
         let market_borrow = market.borrow();
+        
+        
+        
         //Iterate over the goods needed and buy them
         for (key, value) in &goods_needed { 
             let good = market_borrow.get_good(key);
-            
+        
+            //Check if the good exists
             if good.is_none() {
                 println!("Good not found: {}", key);
                 break;
@@ -73,12 +77,13 @@ impl Actor {
             
             let price = good.unwrap().price;
             let amount = value * price;
+           
             
             if amount > self.money {
                 println!("Not enough money to buy {} for {} each", key, price);
                 continue;
             }
-            if self.money > amount {
+            if amount < self.money {
                 println!("Buying {} for {} each", key, price);
                 self.buy(amount);
             }
