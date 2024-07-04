@@ -26,7 +26,10 @@ fn main() {
 
     workplace_1.borrow_mut().add_worker(actor_1.clone());
     
-    
+
+
+
+
     // Simulation Step
     let mut i = 0;
     while i < n {
