@@ -25,9 +25,6 @@ fn main() {
     market_1.borrow_mut().add_good(10.0, "Potatos".into());
 
     workplace_1.borrow_mut().add_worker(actor_1.clone());
-    
-
-
 
 
     // Simulation Step
