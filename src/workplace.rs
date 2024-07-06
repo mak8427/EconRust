@@ -2,6 +2,7 @@ use std::collections::HashMap;
 use crate::actor::Actor;
 use std::rc::Rc;
 use std::cell::RefCell;
+use crate::market::Market;
 
 pub struct Workplace {
     workers: Vec<Rc<RefCell<Actor>>>,
@@ -33,11 +34,12 @@ impl Workplace {
             effective_number_of_workers += worker.borrow().population_val();
             println!("Worker population: {}", worker.borrow().population_val());
         }
-        
-        
         println!("Effective number of workers: {}", effective_number_of_workers);
-        
-        
-        
+        self.goods_produced.insert("Potatoes".into(), effective_number_of_workers as f32 * self.technology);
+    }
+    pub fn sell_goods(&mut self, market: Rc<RefCell<Market>>) {
+        for (key, value) in &self.goods_produced {
+            market.borrow_mut().get_good(key).unwrap().q_supplied.push(*value);
+        }
     }
 }

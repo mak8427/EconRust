@@ -81,6 +81,7 @@ impl Actor {
             
             if amount > self.money {
                 println!("Not enough money to buy {} for {} each", key, price);
+                println!("Gold Needed {}", amount - self.money);
                 continue;
             }
             if amount < self.money {
