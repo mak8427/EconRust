@@ -6,7 +6,6 @@ use std::cell::RefCell;
 use std::rc::Rc;
 use std::collections::HashMap;
 use market::Market as OtherMarket;
-use log::{info, warn};
 use actor::Actor as OtherActor;
 use rand::Rng;
 use crate::workplace::Workplace;
@@ -32,6 +31,9 @@ fn setup_logging() -> Result<(), fern::InitError> {
 
 fn main() {
     setup_logging().expect("Failed to initialize logging.");
+    
+    
+    //variables 
     let n = 10;
     let Technology:f32 = 2.0;
     

@@ -3,7 +3,7 @@ use crate::actor::Actor;
 use std::rc::Rc;
 use std::cell::RefCell;
 use crate::market::Market;
-use log::{info, warn};
+use log::{info};
 pub struct Workplace {
     workers: Vec<Rc<RefCell<Actor>>>,
     name: String,

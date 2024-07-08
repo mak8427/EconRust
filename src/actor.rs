@@ -1,7 +1,7 @@
 use std::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
-use log::{info, warn};
+use log::{info};
 use crate::market::Market;
 
 pub struct Item {

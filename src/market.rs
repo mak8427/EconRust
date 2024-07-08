@@ -1,5 +1,5 @@
 
-use log::{info, warn};
+use log::{info};
 pub struct Good {
     pub(crate) price: f32,
     name: String,
