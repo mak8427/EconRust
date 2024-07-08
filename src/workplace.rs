@@ -3,7 +3,7 @@ use crate::actor::Actor;
 use std::rc::Rc;
 use std::cell::RefCell;
 use crate::market::Market;
-
+use log::{info, warn};
 pub struct Workplace {
     workers: Vec<Rc<RefCell<Actor>>>,
     name: String,
@@ -32,10 +32,13 @@ impl Workplace {
         let mut effective_number_of_workers = 0;
         for worker in &self.workers {
             effective_number_of_workers += worker.borrow().population_val();
-            println!("Worker population: {}", worker.borrow().population_val());
+            info!("N of Workers: {}", worker.borrow().population_val());
         }
-        println!("Effective number of workers: {}", effective_number_of_workers);
-        self.goods_produced.insert("Potatoes".into(), effective_number_of_workers as f32 * self.technology);
+        
+        info!("Effective number of workers: {}", effective_number_of_workers);
+        let production = effective_number_of_workers as f32 * self.technology;
+        
+        self.goods_produced.insert("Potatoes".into(), production);
     }
     
     
@@ -43,7 +46,7 @@ impl Workplace {
     pub fn sell_goods(&mut self, market: Rc<RefCell<Market>>) {
         for (key, value) in &self.goods_produced {
             market.borrow_mut().increase_q_sold(key.clone(), *value);
-            println!("Selling {} to the market", key.clone()) ;
+            info!("Selling {} to the market", key.clone()) ;
            
         }
         

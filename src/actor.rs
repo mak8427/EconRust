@@ -1,6 +1,7 @@
 use std::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
+use log::{info, warn};
 use crate::market::Market;
 
 pub struct Item {
@@ -21,7 +22,7 @@ impl Actor {
         
         //needs contains the amount of goods needed per person
         let mut needs = HashMap::new();
-        needs.insert("Potatos".into(), 1.0);
+        needs.insert("Potatoes".into(), 1.0);
         
         
         Actor { money,name, needs, population }
@@ -71,7 +72,7 @@ impl Actor {
         
             //Check if the good exists
             if good.is_none() {
-                println!("Good not found: {}", key);
+                info!("Good not found: {}", key);
                 break;
             }
             
@@ -80,19 +81,19 @@ impl Actor {
            
             
             if amount > self.money {
-                println!("Not enough money to buy {} for {} each", key, price);
-                println!("Gold Needed {}", amount - self.money);
+                info!("Not enough money to buy {} for {} each", key, price);
+                info!("Gold Needed {}", amount - self.money);
                 continue;
             }
             if amount < self.money {
-                println!("Buying {} for {} each", key, price);
+                info!("Buying {} for {} each", key, price);
                 self.buy(amount);
             }
             
             
-            println!("Amount: {}", amount);
+            info!("Amount: {}", amount);
         }
-        println!("Goods needed: {:?}", goods_needed);
+        info!("Goods needed: {:?}", goods_needed);
     }
     
 }

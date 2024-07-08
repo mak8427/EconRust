@@ -1,5 +1,5 @@
 
-
+use log::{info, warn};
 pub struct Good {
     pub(crate) price: f32,
     name: String,
@@ -40,7 +40,7 @@ impl Market {
         for good in self.goods.iter_mut() {
             if good.name == name {
                 good.q_sold += amount;
-                println!("Sold {} of {}, with a total of {}", amount, name, good.q_sold);
+                info!("Sold {} of {}, with a total of {}", amount, name, good.q_sold);
             }
             
             
