@@ -51,8 +51,8 @@ impl Actor {
     fn needs_calc(&self) -> HashMap<String, f32> {
         let mut goods_needed = self.needs.clone();
         for (key, value) in &mut goods_needed {
-            if key == "Potatos" {
-                *value *= self.population as f32;
+            if key == "Potatoes" {
+                *value = self.population as f32;
             }
         }
         goods_needed

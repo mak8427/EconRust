@@ -26,6 +26,28 @@ impl Market {
         }
         None
     }
+    
+    pub fn new_day(&mut self) {
+        for good in self.goods.iter_mut() {
+            good.q_demanded.push(good.q_sold );
+            good.q_supplied.push(good.q_bought );
+            good.q_sold = 0.0;
+            good.q_bought  = 0.0;
+        }
+    }
+    
+    pub fn increase_q_sold(&mut self, name: String, amount: f32) {
+        for good in self.goods.iter_mut() {
+            if good.name == name {
+                good.q_sold += amount;
+                println!("Sold {} of {}, with a total of {}", amount, name, good.q_sold);
+            }
+            
+            
+        }
+    }
+    
+    
     pub fn update_good_price(&mut self) {
         for good in self.goods.iter_mut() {
             good.price =  good.price * (good.q_bought / good.q_sold).sqrt();

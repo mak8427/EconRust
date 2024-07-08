@@ -37,9 +37,16 @@ impl Workplace {
         println!("Effective number of workers: {}", effective_number_of_workers);
         self.goods_produced.insert("Potatoes".into(), effective_number_of_workers as f32 * self.technology);
     }
+    
+    
+    
     pub fn sell_goods(&mut self, market: Rc<RefCell<Market>>) {
         for (key, value) in &self.goods_produced {
-            market.borrow_mut().get_good(key).unwrap().q_supplied.push(*value);
+            market.borrow_mut().increase_q_sold(key.clone(), *value);
+            println!("Selling {} to the market", key.clone()) ;
+           
         }
+        
+        
     }
 }

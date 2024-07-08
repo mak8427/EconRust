@@ -22,7 +22,7 @@ fn main() {
     
     let mut market_1 = Rc::new(RefCell::new(OtherMarket::new()));
     let mut workplace_1 = Rc::new(RefCell::new(Workplace::new(HashMap::new(), "Test".into(), 1.0)));    // Market initialization
-    market_1.borrow_mut().add_good(10.0, "Potatos".into());
+    market_1.borrow_mut().add_good(10.0, "Potatoes".into());
 
     workplace_1.borrow_mut().add_worker(actor_1.clone());
 
@@ -33,9 +33,11 @@ fn main() {
         actor_1.borrow_mut().buy_needs(market_1.clone());
         actor_1.borrow_mut().increase_population(1);
         workplace_1.borrow_mut().produce();
+        workplace_1.borrow_mut().sell_goods(market_1.clone());
 
         
         i += 1;
     }
     
+    println!("END OF SIMULATION");
 }
