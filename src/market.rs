@@ -56,7 +56,7 @@ impl Market {
     pub fn update_good_price(&mut self) {
         for good in self.goods.iter_mut() {
             good.price =  good.price * (good.q_bought / good.q_sold).sqrt();
-            info!("The price of {} is now {}", good.name, good.price);
+            info!("The price of {} is now {}, Q_bought: {} , Q_Sold: {}", good.name, good.price, good.q_bought , good.q_sold);
         }
     }
     
