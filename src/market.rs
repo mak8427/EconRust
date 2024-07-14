@@ -42,15 +42,21 @@ impl Market {
                 good.q_sold += amount;
                 info!("Sold {} of {}, with a total of {}", amount, name, good.q_sold);
             }
-            
-            
         }
     }
-    
+    pub fn increase_q_bought(&mut self, name: String, amount: f32) {
+        for good in self.goods.iter_mut() {
+            if good.name == name {
+                good.q_bought += amount;
+                info!("Bought {} of {}, with a total of {}", amount, name, good.q_bought);
+            }
+        }
+    }
     
     pub fn update_good_price(&mut self) {
         for good in self.goods.iter_mut() {
             good.price =  good.price * (good.q_bought / good.q_sold).sqrt();
+            info!("The price of {} is now {}", good.name, good.price);
         }
     }
     

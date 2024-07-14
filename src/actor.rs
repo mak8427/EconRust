@@ -62,7 +62,7 @@ impl Actor {
     
     pub fn  buy_needs(&mut self, market: Rc<RefCell<Market>>){
         let goods_needed = self.needs_calc();
-        let market_borrow = market.borrow();
+        let mut market_borrow = market.borrow_mut();
         
         
         
@@ -88,9 +88,9 @@ impl Actor {
             if amount < self.money {
                 info!("Buying {} for {} each", key, price);
                 self.buy(amount);
+                let value_ : f32 = *value;
+                market_borrow.increase_q_bought(key.clone(), value_);
             }
-            
-            
             info!("Amount: {}", amount);
         }
         info!("Goods needed: {:?}", goods_needed);

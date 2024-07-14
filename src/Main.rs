@@ -24,7 +24,10 @@ fn setup_logging() -> Result<(), fern::InitError> {
             ))
         })
         .level(log::LevelFilter::Info)
+        // Log to file
         .chain(fern::log_file("output.log")?)
+        // Also log to console
+        .chain(std::io::stdout())
         .apply()?;
     Ok(())
 }
@@ -34,12 +37,12 @@ fn main() {
     
     
     //variables 
-    let n = 10;
+    let n = 20;
     let Technology:f32 = 2.0;
     
     // Agents initialization
     
-    let mut actor_1 = Rc::new(RefCell::new(OtherActor::new(rand::thread_rng().gen_range(0.0..50.0), "Test".into(), 20)));
+    let mut actor_1 = Rc::new(RefCell::new(OtherActor::new(2000 as f32, "Test".into(), 20)));
     
     let mut market_1 = Rc::new(RefCell::new(OtherMarket::new()));
     let mut workplace_1 = Rc::new(RefCell::new(Workplace::new(HashMap::new(), "Test".into(), Technology)));    // Market initialization
@@ -55,6 +58,9 @@ fn main() {
         actor_1.borrow_mut().increase_population(1);
         workplace_1.borrow_mut().produce();
         workplace_1.borrow_mut().sell_goods(market_1.clone());
+        
+        market_1.borrow_mut().update_good_price();
+        market_1.borrow_mut().new_day();
 
         
         i += 1;
