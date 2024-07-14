@@ -49,7 +49,7 @@ impl Workplace {
             info!("Selling {} to the market", key.clone()) ;
            
         }
-        
-        
     }
+    
+    //TODO: Computing profit and paying workers
 }
