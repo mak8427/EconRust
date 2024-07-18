@@ -38,8 +38,8 @@ fn main() {
     
     //variables 
     let n = 20;
-    let number_of_agents = 10;
-    let Technology:f32 = 0.8;
+    let number_of_agents = 100;
+    let Technology:f32 = 1.0;
     
     // Agents initialization
     //initialise and array of actors
@@ -69,6 +69,9 @@ fn main() {
         
         workplace_1.borrow_mut().produce();
         workplace_1.borrow_mut().sell_goods(market_1.clone());
+        workplace_1.borrow_mut().profit(market_1.clone());
+        workplace_1.borrow_mut().pay_workers();
+        
 
 
         for actor in &actors {
@@ -79,6 +82,8 @@ fn main() {
         market_1.borrow_mut().update_good_price();
         market_1.borrow_mut().new_day();
 
+        
+        info!("Goods produced: {:?}", workplace_1.borrow().goods_produced);
         
         i += 1;
     }

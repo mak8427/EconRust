@@ -34,14 +34,17 @@ impl Actor {
     pub fn buy(&mut self, amount: f32) {
         self.money -= amount;
     }
-    
+    pub fn get_paid(&mut self, amount: f32) {  self.money += amount; }
     pub fn money_val(&self) -> f32 {
         return self.money;
     }
+    
+    
     pub fn population_val(&self) -> i32 { return self.population; }
     pub fn increase_population(&mut self, amount: i32) {
         self.population += amount;
     }
+    pub fn decrease_population(&mut self, amount: i32) { self.population -= amount; }
     
     
     
