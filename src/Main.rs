@@ -38,8 +38,8 @@ fn main() {
     
     //variables 
     let n = 20;
-    let number_of_agents = 100;
-    let Technology:f32 = 1.0;
+    let number_of_agents = 10;
+    let technology:f32 = 1.01;
     
     // Agents initialization
     //initialise and array of actors
@@ -55,7 +55,7 @@ fn main() {
     market_1.borrow_mut().add_good(10.0, "Potatoes".into());
 
     // Workplace initialization
-    let mut workplace_1 = Rc::new(RefCell::new(Workplace::new(HashMap::new(), "Test".into(), Technology)));    // Market initialization
+    let mut workplace_1 = Rc::new(RefCell::new(Workplace::new(HashMap::new(), "Test".into(), technology)));    // Market initialization
     for actor in &actors {
         workplace_1.borrow_mut().add_worker(actor.clone());
     }
@@ -84,7 +84,6 @@ fn main() {
 
         
         info!("Goods produced: {:?}", workplace_1.borrow().goods_produced);
-        
         i += 1;
     }
     

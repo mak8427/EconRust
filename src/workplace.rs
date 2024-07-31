@@ -9,15 +9,15 @@ pub struct Workplace {
     name: String,
     money: f32,
     //the type of goods produced and the amount produced in total
-    pub(crate) goods_produced: HashMap<String, f32>,
+    pub(crate) goods_produced: HashMap<String, i32>,
     
     technology: f32,
 }
 
 impl Workplace {
-    pub fn new(mut goods_produced: HashMap<String, f32>, name: String, technology: f32) -> Workplace {
+    pub fn new(mut goods_produced: HashMap<String, i32>, name: String, technology: f32) -> Workplace {
         if goods_produced.len() == 0 {
-            goods_produced.insert("Potatoes".into(), 0.0);
+            goods_produced.insert("Potatoes".into(), 0);
         }
 
         Workplace { workers: Vec::new(), name, money: 0.0, goods_produced, technology }
@@ -37,7 +37,7 @@ impl Workplace {
         }
 
         info!("Effective number of workers: {}", effective_number_of_workers);
-        let production = effective_number_of_workers as f32 * self.technology;
+        let production: i32 = (effective_number_of_workers as f32 * self.technology).round() as i32;
 
         self.goods_produced.insert("Potatoes".into(), production);
     }
@@ -53,7 +53,7 @@ impl Workplace {
 
     pub fn profit(&mut self, market: Rc<RefCell<Market>>) {
         for (key, value) in &self.goods_produced {
-            self.money += market.borrow().get_good(key).unwrap().price * value;
+            self.money += market.borrow().get_good(key).unwrap().price * (*value as f32);
         }
     }
     

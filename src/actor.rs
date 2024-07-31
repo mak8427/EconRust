@@ -10,7 +10,7 @@ pub struct Item {
 pub struct Actor {
     money: f32,
     name: String,
-    needs: HashMap<String, f32>,
+    needs: HashMap<String, i32>,
     population:i32,
     
     
@@ -23,7 +23,7 @@ impl Actor {
         
         //needs contains the amount of goods needed per person
         let mut needs = HashMap::new();
-        needs.insert("Potatoes".into(), 1.0);
+        needs.insert("Potatoes".into(), 1);
         
         
         Actor { money,name, needs, population }
@@ -45,6 +45,13 @@ impl Actor {
     pub fn increase_population(&mut self, amount: i32) {
         self.population += amount;
     }
+    
+    
+    
+    
+    
+    
+    
     pub fn decrease_population(&mut self, amount: i32) { self.population -= amount; }
     
     
@@ -53,11 +60,11 @@ impl Actor {
     
     
     //Calculate the needs of the population and returns a hashmap with the goods needed
-    fn needs_calc(&self) -> HashMap<String, f32> {
+    fn needs_calc(&self) -> HashMap<String, i32> {
         let mut goods_needed = self.needs.clone();
         for (key, value) in &mut goods_needed {
             if key == "Potatoes" {
-                *value = self.population as f32;
+                *value = self.population;
             }
         }
         goods_needed
@@ -81,7 +88,7 @@ impl Actor {
             }
             
             let price = good.unwrap().price;
-            let amount = value * price;
+            let amount = (*value as f32)  * price;
            
             
             if amount > self.money {
@@ -92,7 +99,7 @@ impl Actor {
             if amount < self.money {
                 info!("Buying {} for {} each", key, price);
                 self.buy(amount);
-                let value_ : f32 = *value;
+                let value_ : i32 = *value;
                 market_borrow.increase_q_bought(key.clone(), value_);
             }
             info!("Amount: {}", amount);
