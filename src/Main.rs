@@ -1,7 +1,11 @@
 mod actor;
 mod market;
 mod workplace;
+mod functions;
 
+
+use rand::thread_rng;
+use rand_distr::{Normal, Distribution};
 use std::cell::RefCell;
 use std::rc::Rc;
 use std::collections::HashMap;
@@ -12,6 +16,7 @@ use crate::workplace::Workplace;
 use chrono::Local;
 use fern::Dispatch;
 use log::{info};
+
 fn setup_logging() -> Result<(), fern::InitError> {
     Dispatch::new()
         .format(|out, message, record| {
@@ -38,8 +43,8 @@ fn main() {
     
     //variables 
     let n = 20;
-    let number_of_agents = 10;
-    let technology:f32 = 1.01;
+    let number_of_agents = 300;
+    let technology:f32 = 1.0;
     
     // Agents initialization
     //initialise and array of actors
@@ -48,9 +53,10 @@ fn main() {
         actors.push(Rc::new(RefCell::new(OtherActor::new(rand::thread_rng().gen_range(1000.0..5000.0), "Test".into(), rand::thread_rng().gen_range(1..20)))));
     }
     
+    //Distribution Init
+    let normal_dist = functions::NormalDist::new(1.0, 1.0);
     
-    
-    
+    //Market initialisation
     let mut market_1 = Rc::new(RefCell::new(OtherMarket::new()));
     market_1.borrow_mut().add_good(10.0, "Potatoes".into());
 
@@ -85,6 +91,9 @@ fn main() {
         
         info!("Goods produced: {:?}", workplace_1.borrow().goods_produced);
         i += 1;
+        
+        workplace_1.borrow_mut().technology = rand::thread_rng().gen_range(0.8..1.2);
+        
     }
     
     println!("END OF SIMULATION");

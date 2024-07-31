@@ -11,7 +11,7 @@ pub struct Workplace {
     //the type of goods produced and the amount produced in total
     pub(crate) goods_produced: HashMap<String, i32>,
     
-    technology: f32,
+    pub(crate) technology: f32,
 }
 
 impl Workplace {
