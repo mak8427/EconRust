@@ -12,6 +12,7 @@ pub struct Actor {
     name: String,
     needs: HashMap<String, i32>,
     population:i32,
+    needs_satisfaction: HashMap<String, f32>
     
     
     
@@ -23,10 +24,11 @@ impl Actor {
         
         //needs contains the amount of goods needed per person
         let mut needs = HashMap::new();
+        let mut needs_satisfaction = HashMap::new();
         needs.insert("Potatoes".into(), 1);
         
         
-        Actor { money,name, needs, population }
+        Actor { money,name, needs, population,needs_satisfaction }
     }
 
     
@@ -45,12 +47,6 @@ impl Actor {
     pub fn increase_population(&mut self, amount: i32) {
         self.population += amount;
     }
-    
-    
-    
-    
-    
-    
     
     pub fn decrease_population(&mut self, amount: i32) { self.population -= amount; }
     
