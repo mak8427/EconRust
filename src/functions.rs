@@ -15,6 +15,6 @@ impl NormalDist {
 
     pub fn sample(&self) -> f32 {
         let mut rng = thread_rng();
-        self.normal.sample(&mut rng) as f32 
+        self.normal.sample(&mut rng) as f32
     }
 }    

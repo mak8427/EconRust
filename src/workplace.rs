@@ -4,13 +4,14 @@ use std::rc::Rc;
 use std::cell::RefCell;
 use crate::market::Market;
 use log::{info};
+
 pub struct Workplace {
     workers: Vec<Rc<RefCell<Actor>>>,
     name: String,
     money: f32,
     //the type of goods produced and the amount produced in total
     pub(crate) goods_produced: HashMap<String, i32>,
-    
+
     pub(crate) technology: f32,
 }
 
@@ -56,7 +57,7 @@ impl Workplace {
             self.money += market.borrow().get_good(key).unwrap().price * (*value as f32);
         }
     }
-    
+
     pub fn pay_workers(&mut self) {
         for worker in &self.workers {
             worker.borrow_mut().get_paid(self.money / self.workers.len() as f32);

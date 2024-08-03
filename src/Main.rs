@@ -45,12 +45,13 @@ fn main() {
     let n = 20;
     let number_of_agents = 300;
     let technology:f32 = 1.0;
+    let Growth_rate= 0.05;
     
     // Agents initialization
     //initialise and array of actors
     let mut actors = Vec::new();
     while actors.len() < number_of_agents {
-        actors.push(Rc::new(RefCell::new(OtherActor::new(rand::thread_rng().gen_range(1000.0..5000.0), "Test".into(), rand::thread_rng().gen_range(1..20)))));
+        actors.push(Rc::new(RefCell::new(OtherActor::new(rand::thread_rng().gen_range(1000.0..5000.0), "Test".into(), rand::thread_rng().gen_range(1..20), Growth_rate))));
     }
     
     //Distribution Init
@@ -83,6 +84,7 @@ fn main() {
         for actor in &actors {
             actor.borrow_mut().buy_needs(market_1.clone());
             actor.borrow_mut().increase_population(1);
+            actor.borrow_mut().population_growth();
         }
         
         market_1.borrow_mut().update_good_price();
