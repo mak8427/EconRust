@@ -42,8 +42,8 @@ fn main() {
     
     
     //variables 
-    let n = 20;
-    let number_of_agents = 300;
+    let n = 200;
+    let number_of_agents = 5;
     let technology:f32 = 1.0;
     let Growth_rate= 0.05;
     
@@ -69,7 +69,7 @@ fn main() {
     // Simulation Step
     let mut i = 0;
     while i < n {
-        info!("Day: {}", i);
+        info!("======= START DAY {} =======", i);
         
 
         
@@ -83,7 +83,6 @@ fn main() {
 
         for actor in &actors {
             actor.borrow_mut().buy_needs(market_1.clone());
-            actor.borrow_mut().increase_population(1);
             actor.borrow_mut().population_growth();
         }
         
@@ -95,7 +94,10 @@ fn main() {
         i += 1;
         
         workplace_1.borrow_mut().technology = rand::thread_rng().gen_range(0.8..1.2);
-        
+
+
+
+        info!("======= END DAY {} =======", i);
     }
     
     println!("END OF SIMULATION");

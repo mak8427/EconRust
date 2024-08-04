@@ -43,8 +43,10 @@ impl Actor {
     pub fn decrease_population(&mut self, amount: i32) { self.population -= amount; }
 
     pub fn population_growth(&mut self){
-        let avg_satisfaction: f32 = self.primary_needs_satisfaction.values().copied().sum::<f32>() / self.primary_needs_satisfaction.len() as f32 of growth r;
-        info!("Avg_satisfaction: {}", avg_satisfaction)
+        let avg_satisfaction: f32 = self.primary_needs_satisfaction.values().copied().sum::<f32>() / self.primary_needs_satisfaction.len() as f32;
+        let pop_delta: i32 = (self.growth_rate * self.population as f32 * avg_satisfaction).round() as i32 ;
+        self.increase_population(pop_delta);
+        info!("Avg_satisfaction: {}  --> Increase in Population by {} total of  {}", avg_satisfaction, pop_delta, self.population);
 
     }
 

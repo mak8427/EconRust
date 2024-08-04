@@ -38,7 +38,7 @@ impl Workplace {
         }
 
         info!("Effective number of workers: {}", effective_number_of_workers);
-        let production: i32 = (effective_number_of_workers as f32 * self.technology).round() as i32;
+        let production: i32 = (effective_number_of_workers as f32 * self.technology * Self::scalability_curve(effective_number_of_workers)).round() as i32;
 
         self.goods_produced.insert("Potatoes".into(), production);
     }
@@ -61,6 +61,13 @@ impl Workplace {
     pub fn pay_workers(&mut self) {
         for worker in &self.workers {
             worker.borrow_mut().get_paid(self.money / self.workers.len() as f32);
+            
         }
+    }
+    
+    fn scalability_curve(x:i32) -> f32 {
+        //https://www.desmos.com/calculator/6zy8dxx0ry
+        let y: f32= (-0.00001*((x as f32 - 1000.0).powf(2 as f32))+20.0)/10.0;
+        return y
     }
 }
