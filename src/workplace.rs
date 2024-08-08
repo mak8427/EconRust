@@ -39,7 +39,7 @@ impl Workplace {
 
         info!("Effective number of workers: {}", effective_number_of_workers);
         let production: i32 = std::cmp::max(1,   (effective_number_of_workers as f32 * self.technology * Self::scalability_curve(effective_number_of_workers)).round() as i32);
-        
+
         self.goods_produced.insert("Potatoes".into(), production);
     }
 
@@ -63,6 +63,7 @@ impl Workplace {
             worker.borrow_mut().get_paid(self.money / self.workers.len() as f32);
             
         }
+        self.money = 0.0 ;
     }
     
     fn scalability_curve(x:i32) -> f32 {

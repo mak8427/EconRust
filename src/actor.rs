@@ -94,8 +94,16 @@ impl Actor {
 
             if amount > self.money {
                 info!("Not enough money to buy {} for {} each", key, price);
-                info!("Gold Needed {}", amount - self.money);
-                self.primary_needs_satisfaction.insert(key.clone(), self.money / amount);
+                
+                let needed: f32 = amount - self.money;
+                let rate: f32  = self.money / amount;
+                let q_bought: i32 = (rate * *value as f32).round() as i32;
+                info!("Gold Needed {}, will buy {} % so it will buy: {}", needed, rate, q_bought ) ;
+                
+                
+                self.primary_needs_satisfaction.insert(key.clone(),rate );
+                market_borrow.increase_q_bought(key.clone(), q_bought);
+                self.money = 0.0; //used all of the money
 
                 continue;
             }
