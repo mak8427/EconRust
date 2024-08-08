@@ -8,7 +8,7 @@ use log::{info};
 pub struct Workplace {
     workers: Vec<Rc<RefCell<Actor>>>,
     name: String,
-    money: f32,
+    pub(crate) money: f32,
     //the type of goods produced and the amount produced in total
     pub(crate) goods_produced: HashMap<String, i32>,
 
@@ -38,8 +38,8 @@ impl Workplace {
         }
 
         info!("Effective number of workers: {}", effective_number_of_workers);
-        let production: i32 = (effective_number_of_workers as f32 * self.technology * Self::scalability_curve(effective_number_of_workers)).round() as i32;
-
+        let production: i32 = std::cmp::max(1,   (effective_number_of_workers as f32 * self.technology * Self::scalability_curve(effective_number_of_workers)).round() as i32);
+        
         self.goods_produced.insert("Potatoes".into(), production);
     }
 
@@ -67,7 +67,7 @@ impl Workplace {
     
     fn scalability_curve(x:i32) -> f32 {
         //https://www.desmos.com/calculator/6zy8dxx0ry
-        let y: f32= (-0.00001*((x as f32 - 1000.0).powf(2 as f32))+20.0)/10.0;
+        let y: f32= (-0.00001*((x as f32 - 1000.0).powf(2 as f32))+20.0)/10.0 ;
         return y
     }
 }

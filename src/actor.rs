@@ -39,14 +39,24 @@ impl Actor {
 
 
     pub fn population_val(&self) -> i32 { return self.population; }
-    pub fn increase_population(&mut self, amount: i32) { self.population += 1; }
+    pub fn increase_population(&mut self, amount: i32) { self.population += amount; }
     pub fn decrease_population(&mut self, amount: i32) { self.population -= amount; }
 
     pub fn population_growth(&mut self){
         let avg_satisfaction: f32 = self.primary_needs_satisfaction.values().copied().sum::<f32>() / self.primary_needs_satisfaction.len() as f32;
-        let pop_delta: i32 = (self.growth_rate * self.population as f32 * avg_satisfaction).round() as i32 ;
-        self.increase_population(pop_delta);
-        info!("Avg_satisfaction: {}  --> Increase in Population by {} total of  {}", avg_satisfaction, pop_delta, self.population);
+        
+        if avg_satisfaction > 0.8 {
+            let pop_delta: i32 = (self.growth_rate * self.population as f32 * avg_satisfaction).round() as i32 + 1;
+            self.increase_population(pop_delta);
+            info!("Avg_satisfaction: {}  --> Increase in Population by {} total of  {}", avg_satisfaction, pop_delta, self.population);
+        }
+        else {
+            let pop_delta: i32 = (self.population as f32 *(0.99 - avg_satisfaction)).round() as i32 ;
+            self.decrease_population(pop_delta);
+            info!("Avg_satisfaction: {}  --> Decrease in Population by {} total of  {}", avg_satisfaction, pop_delta, self.population);
+            
+        }
+
 
     }
 
