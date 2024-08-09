@@ -3,14 +3,14 @@ use log::{info};
 pub struct Good {
     pub(crate) price: f32,
     name: String,
-    q_sold: i32,
-    q_bought: i32,
+    pub(crate) q_sold: i32,
+    pub(crate) q_bought: i32,
     q_demanded: Vec<i32>,
     q_supplied: Vec<i32>,
 }
 
 pub struct Market {
-    goods: Vec<Good>,
+    pub(crate) goods: Vec<Good>,
 }
 
 impl Market {

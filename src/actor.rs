@@ -7,7 +7,7 @@ use crate::market::Market;
 pub struct Item {}
 
 pub struct Actor {
-    money: f32,
+    pub(crate) money: f32,
     name: String,
     needs: HashMap<String, i32>,
     population: i32,

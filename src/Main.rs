@@ -45,11 +45,15 @@ fn main() {
     // Variables
     let n = 500;
     let number_of_agents = 5;
+    let number_of_workplaces=1;
     let technology: f32 = 1.0;
     let growth_rate = 0.05;
 
     // Agents initialization
     let mut actors = Vec::new();
+    let mut workplaces = Vec::new();
+    
+    
     while actors.len() < number_of_agents {
         actors.push(Rc::new(RefCell::new(OtherActor::new(
             rand::thread_rng().gen_range(1000.0..5000.0),
@@ -59,21 +63,24 @@ fn main() {
         ))));
     }
 
+    while workplaces.len() < number_of_workplaces {
+        workplaces.push(Rc::new(RefCell::new(Workplace::new(
+            HashMap::new(),
+            "Test".into(),
+            technology,
+        ))));
+    }
+    
     // Distribution Init
     let normal_dist = functions::NormalDist::new(1.0, 1.0);
 
     // Market initialization
     let mut market_1 = Rc::new(RefCell::new(OtherMarket::new()));
     market_1.borrow_mut().add_good(10.0, "Potatoes".into());
-
-    // Workplace initialization
-    let mut workplace_1 = Rc::new(RefCell::new(Workplace::new(
-        HashMap::new(),
-        "Test".into(),
-        technology,
-    )));
+    
+    
     for actor in &actors {
-        workplace_1.borrow_mut().add_worker(actor.clone());
+        workplaces[0].borrow_mut().add_worker(actor.clone());
     }
 
     // Initialize CSV writer
@@ -84,32 +91,32 @@ fn main() {
     while i < n {
         info!("======= START DAY {} =======", i);
 
-        workplace_1.borrow_mut().produce();
-        workplace_1.borrow_mut().sell_goods(market_1.clone());
-        workplace_1.borrow_mut().profit(market_1.clone());
-        workplace_1.borrow_mut().pay_workers();
-
+        for workplace in &workplaces {
+            workplace.borrow_mut().produce();
+            workplace.borrow_mut().sell_goods(market_1.clone());
+            workplace.borrow_mut().profit(market_1.clone());
+            workplace.borrow_mut().pay_workers();
+        }
         for actor in &actors {
             actor.borrow_mut().buy_needs(market_1.clone());
             actor.borrow_mut().population_growth();
         }
 
         market_1.borrow_mut().update_good_price();
-        market_1.borrow_mut().new_day();
 
-        info!("Goods produced: {:?}", workplace_1.borrow().goods_produced);
 
         // Write data to CSV
         functions::write_simulation_data(
             &mut csv_writer,
             i,
-            &workplace_1.borrow().goods_produced,
-            workplace_1.borrow().money,
-            workplace_1.borrow().technology,
-        ).expect("Failed to write data to CSV");
+            &workplaces,
+            &actors,
+            &market_1,
+        ).expect("Error");
 
         i += 1;
-        workplace_1.borrow_mut().technology = rand::thread_rng().gen_range(0.8..1.2);
+        workplaces[0].borrow_mut().technology = rand::thread_rng().gen_range(0.8..1.2);
+        market_1.borrow_mut().new_day();
 
         info!("======= END DAY {} =======", i);
     }
