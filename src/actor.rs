@@ -10,7 +10,7 @@ pub struct Actor {
     pub(crate) money: f32,
     name: String,
     needs: HashMap<String, i32>,
-    population: i32,
+    pub(crate) population: i32,
     primary_needs_satisfaction: HashMap<String, f32>,
     growth_rate: f32,
 }

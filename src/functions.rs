@@ -45,7 +45,7 @@ pub(crate) fn write_simulation_data(
     let total_goods_produced: i32 = workplaces.iter().map(|w| w.borrow().goods_produced.values().sum::<i32>()).sum();
     let total_actors_money: f32 = actors.iter().map(|a| a.borrow().money).sum();
     let technology = workplaces[0].borrow().technology;
-    let total_population: usize = actors.len();
+    let total_population: i32 = actors.iter().map(|a| a.borrow().population).sum();
     let total_q_bought: i32 = market.borrow().goods.iter().map(|g| g.q_bought).sum();
     let total_q_sold: i32 = market.borrow().goods.iter().map(|g| g.q_sold).sum();
 
