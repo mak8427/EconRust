@@ -2,6 +2,7 @@ mod actor;
 mod market;
 mod workplace;
 mod functions;
+mod SimulationApp;
 
 use std::fs::File;
 use std::io::{self, Write};
@@ -66,18 +67,7 @@ fn main() {
     // Initialize CSV writer
     let mut csv_writer = functions::initialize_csv_writer("simulation_data.csv").expect("Failed to create CSV writer");
 
-    // Initialize plot
-    let root = BitMapBackend::new("plot.png", (1024, 768)).into_drawing_area();
-    root.fill(&WHITE).unwrap();
-    let mut chart = ChartBuilder::on(&root)
-        .caption("Simulation Data", ("sans-serif", 50).into_font())
-        .margin(10)
-        .x_label_area_size(30)
-        .y_label_area_size(30)
-        .build_cartesian_2d(0..n, 0..50000)
-        .unwrap();
-
-    chart.configure_mesh().draw().unwrap();
+    // Initialize SimulationApp
 
     // Simulation Step
     let mut i = 0;
@@ -106,11 +96,6 @@ fn main() {
             &market_1,
         ).expect("Error");
 
-        // Update plot
-        chart.draw_series(LineSeries::new(
-            vec![(day, total_goods_produced)],
-            &BLUE,
-        )).unwrap();
 
         i += 1;
         workplaces[0].borrow_mut().technology = rand::thread_rng().gen_range(0.8..1.2);
@@ -119,5 +104,6 @@ fn main() {
         info!("======= END DAY {} =======", i);
     }
 
-    println!("END OF SIMULATION");
+    // Run the UI
+    let native_options = eframe::NativeOptions::default();
 }

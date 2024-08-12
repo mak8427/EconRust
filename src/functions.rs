@@ -1,4 +1,4 @@
-use std::cell::{RefCell};
+use std::cell::RefCell;
 use rand::thread_rng;
 use rand_distr::{Normal, Distribution};
 use std::fs::File;
@@ -10,8 +10,6 @@ use fern::Dispatch;
 use crate::actor::Actor;
 use crate::market::Market;
 use crate::workplace::Workplace;
-
-
 
 pub(crate) fn setup_logging() -> Result<(), fern::InitError> {
     Dispatch::new()
@@ -32,6 +30,7 @@ pub(crate) fn setup_logging() -> Result<(), fern::InitError> {
         .apply()?;
     Ok(())
 }
+
 pub(crate) struct NormalDist {
     normal: Normal<f64>,
 }
