@@ -18,42 +18,23 @@ use crate::workplace::Workplace;
 use chrono::Local;
 use fern::Dispatch;
 use log::{info};
-
-fn setup_logging() -> Result<(), fern::InitError> {
-    Dispatch::new()
-        .format(|out, message, record| {
-            out.finish(format_args!(
-                "{}[{}][{}] {}",
-                Local::now().format("[%Y-%m-%d][%H:%M:%S]"),
-                record.target(),
-                record.level(),
-                message
-            ))
-        })
-        .level(log::LevelFilter::Info)
-        // Log to file
-        .chain(fern::log_file("output.log")?)
-        // Also log to console
-        .chain(std::io::stdout())
-        .apply()?;
-    Ok(())
-}
+use plotters::prelude::*;
+use plotters::style::full_palette::BLUE;
 
 fn main() {
-    setup_logging().expect("Failed to initialize logging.");
+    functions::setup_logging().expect("Failed to initialize logging.");
 
     // Variables
     let n = 500;
     let number_of_agents = 5;
-    let number_of_workplaces=1;
+    let number_of_workplaces = 1;
     let technology: f32 = 1.0;
     let growth_rate = 0.05;
 
     // Agents initialization
     let mut actors = Vec::new();
     let mut workplaces = Vec::new();
-    
-    
+
     while actors.len() < number_of_agents {
         actors.push(Rc::new(RefCell::new(OtherActor::new(
             rand::thread_rng().gen_range(1000.0..5000.0),
@@ -70,21 +51,33 @@ fn main() {
             technology,
         ))));
     }
-    
+
     // Distribution Init
     let normal_dist = functions::NormalDist::new(1.0, 1.0);
 
     // Market initialization
     let mut market_1 = Rc::new(RefCell::new(OtherMarket::new()));
     market_1.borrow_mut().add_good(10.0, "Potatoes".into());
-    
-    
+
     for actor in &actors {
         workplaces[0].borrow_mut().add_worker(actor.clone());
     }
 
     // Initialize CSV writer
     let mut csv_writer = functions::initialize_csv_writer("simulation_data.csv").expect("Failed to create CSV writer");
+
+    // Initialize plot
+    let root = BitMapBackend::new("plot.png", (1024, 768)).into_drawing_area();
+    root.fill(&WHITE).unwrap();
+    let mut chart = ChartBuilder::on(&root)
+        .caption("Simulation Data", ("sans-serif", 50).into_font())
+        .margin(10)
+        .x_label_area_size(30)
+        .y_label_area_size(30)
+        .build_cartesian_2d(0..n, 0..50000)
+        .unwrap();
+
+    chart.configure_mesh().draw().unwrap();
 
     // Simulation Step
     let mut i = 0;
@@ -104,15 +97,20 @@ fn main() {
 
         market_1.borrow_mut().update_good_price();
 
-
-        // Write data to CSV
-        functions::write_simulation_data(
+        // Write data to CSV and get data for plotting
+        let (day, total_goods_produced, total_actors_money, technology, total_population, total_q_bought, total_q_sold) = functions::write_simulation_data(
             &mut csv_writer,
             i,
             &workplaces,
             &actors,
             &market_1,
         ).expect("Error");
+
+        // Update plot
+        chart.draw_series(LineSeries::new(
+            vec![(day, total_goods_produced)],
+            &BLUE,
+        )).unwrap();
 
         i += 1;
         workplaces[0].borrow_mut().technology = rand::thread_rng().gen_range(0.8..1.2);
