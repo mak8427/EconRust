@@ -27,7 +27,7 @@ fn main() {
 
     // Variables
     let n = 500;
-    let number_of_agents = 5;
+    let number_of_agents = 50;
     let number_of_workplaces = 1;
     let technology: f32 = 1.0;
     let growth_rate = 0.05;
