@@ -11,7 +11,8 @@ use crate::actor::Actor;
 use crate::market::Market;
 use crate::workplace::Workplace;
 
-pub(crate) fn setup_logging() -> Result<(), fern::InitError> {
+pub(crate) fn setup_logging(log: bool) -> Result<(), fern::InitError> {
+    if log == true{
     Dispatch::new()
         .format(|out, message, record| {
             out.finish(format_args!(
@@ -28,7 +29,9 @@ pub(crate) fn setup_logging() -> Result<(), fern::InitError> {
         // Also log to console
         .chain(std::io::stdout())
         .apply()?;
+    }
     Ok(())
+    
 }
 
 pub(crate) struct NormalDist {
@@ -51,7 +54,7 @@ impl NormalDist {
 pub(crate) fn initialize_csv_writer(file_path: &str) -> Result<Writer<File>, io::Error> {
     let file = File::create(file_path)?;
     let mut wtr = Writer::from_writer(file);
-    wtr.write_record(&["Day", "Total Goods Produced", "Total Actors Money", "Technology", "Total Population", "Total Q_bought", "Total Q_sold"])?;
+    wtr.write_record(&["Day", "Total Goods Produced", "Total Actors Money", "Technology", "Total Population", "Total Q_bought", "Total Q_sold","Potato_price"])?;
     Ok(wtr)
 }
 
@@ -61,13 +64,14 @@ pub(crate) fn write_simulation_data(
     workplaces: &Vec<Rc<RefCell<Workplace>>>,
     actors: &Vec<Rc<RefCell<Actor>>>,
     market: &Rc<RefCell<Market>>,
-) -> Result<(usize, i32, f32, f32, i32, i32, i32), csv::Error> {
+) -> Result<(usize, i32, f32, f32, i32, i32, i32, f32), csv::Error> {
     let total_goods_produced: i32 = workplaces.iter().map(|w| w.borrow().goods_produced.values().sum::<i32>()).sum();
     let total_actors_money: f32 = actors.iter().map(|a| a.borrow().money).sum();
     let technology = workplaces[0].borrow().technology;
     let total_population: i32 = actors.iter().map(|a| a.borrow().population).sum();
     let total_q_bought: i32 = market.borrow().goods.iter().map(|g| g.q_bought).sum();
     let total_q_sold: i32 = market.borrow().goods.iter().map(|g| g.q_sold).sum();
+    let potato_price: f32 = market.borrow().goods.iter().map(|g|g.price).sum();
 
     let record = vec![
         day.to_string(),
@@ -77,10 +81,11 @@ pub(crate) fn write_simulation_data(
         total_population.to_string(),
         total_q_bought.to_string(),
         total_q_sold.to_string(),
+        potato_price.to_string(),    
     ];
 
     wtr.write_record(&record)?;
     wtr.flush()?;
 
-    Ok((day, total_goods_produced, total_actors_money, technology, total_population, total_q_bought, total_q_sold))
+    Ok((day, total_goods_produced, total_actors_money, technology, total_population, total_q_bought, total_q_sold,potato_price))
 }

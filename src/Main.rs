@@ -4,11 +4,8 @@ mod workplace;
 mod functions;
 mod SimulationApp;
 
-use std::fs::File;
 use std::io::{self, Write};
-use csv::Writer;
 use rand::thread_rng;
-use rand_distr::{Normal, Distribution};
 use std::cell::RefCell;
 use std::rc::Rc;
 use std::collections::HashMap;
@@ -16,14 +13,15 @@ use market::Market as OtherMarket;
 use actor::Actor as OtherActor;
 use rand::Rng;
 use crate::workplace::Workplace;
-use chrono::Local;
-use fern::Dispatch;
 use log::{info};
 use plotters::prelude::*;
-use plotters::style::full_palette::BLUE;
+
+
 
 fn main() {
-    functions::setup_logging().expect("Failed to initialize logging.");
+    let RUST_LOG= false;
+    
+    functions::setup_logging(RUST_LOG).expect("Failed to initialize logging.");
 
     // Variables
     let n = 500;
@@ -53,8 +51,6 @@ fn main() {
         ))));
     }
 
-    // Distribution Init
-    let normal_dist = functions::NormalDist::new(1.0, 1.0);
 
     // Market initialization
     let mut market_1 = Rc::new(RefCell::new(OtherMarket::new()));
@@ -88,7 +84,7 @@ fn main() {
         market_1.borrow_mut().update_good_price();
 
         // Write data to CSV and get data for plotting
-        let (day, total_goods_produced, total_actors_money, technology, total_population, total_q_bought, total_q_sold) = functions::write_simulation_data(
+        let (day, total_goods_produced, total_actors_money, technology, total_population, total_q_bought, total_q_sold, potato_price) = functions::write_simulation_data(
             &mut csv_writer,
             i,
             &workplaces,
