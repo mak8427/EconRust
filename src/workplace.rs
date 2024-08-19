@@ -68,7 +68,7 @@ impl Workplace {
     
     fn scalability_curve(x:i32) -> f32 {
         //https://www.desmos.com/calculator/6zy8dxx0ry
-        let y: f32= (-0.00001*((x as f32 - 1000.0).powf(2 as f32))+20.0)/10.0 ;
+        let y: f32= (-0.000001*((x as f32 - 1000.0).powf(2 as f32))+20.0)/10.0 ;
         return y
     }
 }
